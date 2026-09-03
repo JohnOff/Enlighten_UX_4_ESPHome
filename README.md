@@ -56,12 +56,13 @@ packages:
 `enlighten_features.yaml` is the application-specific layer that connects Home Assistant sensors to the visual widgets and determines which energy flows are displayed.
 
 That file is included in this initial package but note **it is based on the author's HA setup, and includes some values calculated in HA and not available as 'out-of the box' Enphase values**
-**sensor.combined_solar_production** - This is a sensor that combines the current Enphase solar production with the legacy solar production.
-**whole_home_envoy_current_net_power_consumption** - Grid import/export
-**whole_home_envoy_battery** - current battery charge percentage.
-**whole_home_envoy_current_battery_discharge** - Current battery charge/discharge
-**whole_home_envoy_home_consumption** - this is a custom, calculated value that makes a 'best guess' about how much power is not going to either the battery or the grid and assumes that is consumption
-**whole_home_envoy_grid_connected** - calculated value based on both the Enphase admin setting (i.e. manually disconnecting from the grid) and the actual grid connection
+
+- **sensor.combined_solar_production** - This is a sensor that combines the current Enphase solar production with the legacy solar production.
+- **whole_home_envoy_current_net_power_consumption** - Grid import/export
+- **whole_home_envoy_battery** - current battery charge percentage.
+- **whole_home_envoy_current_battery_discharge** - Current battery charge/discharge
+- **whole_home_envoy_home_consumption** - this is a custom, calculated value that makes a 'best guess' about how much power is not going to either the battery or the grid and assumes that is consumption
+- **whole_home_envoy_grid_connected** - calculated value based on both the Enphase admin setting (i.e. manually disconnecting from the grid) and the actual grid connection
 
 ### 3. Include the Enlighten widgets and flows
 
