@@ -157,6 +157,7 @@ Battery -> Grid is currently included for completeness but hidden by default.
 
 The flow geometry is calculated from the Enlighten boundary substitutions.
 
+
 ### `enlighten_animations.yaml`
 
 Contains the LVGL animations for the pulse objects.
@@ -170,18 +171,19 @@ Current animations include:
 - Solar -> Grid
 - Solar -> Battery
 
-Some paths use chained animations to move a pulse through multiple segments.
+Some paths use chained animations to move a pulse through multiple segments. These flows are hidden/shown by the logic in enlighten_features.yaml depending on the various states/values.
 
 ## Current Home Assistant Sensor Dependencies
 
 The current application logic was developed against a Home Assistant energy-monitoring installation.
 
-The following entities are currently known to be used by the Enlighten feature layer:
+The following entities are currently used by the Enlighten feature layer:
 
 ### Grid
 
 ```text
 sensor.whole_home_envoy_current_net_power_consumption
+binary_sensor.whole_home_envoy_grid_connected
 ```
 
 Used to determine whether the home is importing or exporting energy.
@@ -197,6 +199,7 @@ positive / above threshold -> Importing
 
 ```text
 sensor.whole_home_envoy_current_battery_discharge
+sensor.whole_home_envoy_battery
 ```
 
 Current interpretation:
@@ -219,13 +222,18 @@ power < -0.05          -> Charging
 
 The Solar widget is connected to a Home Assistant solar-production sensor in the application-specific feature layer.
 
-The exact entity ID is intentionally not guessed here because the feature file was not included in this release package.
+```text
+sensor.combined_solar_production  
+```
+This is a sensor that combines the current Enphase solar production with the legacy solar production.
 
 ### House
 
 The House widget is connected to a Home Assistant house-consumption sensor in the application-specific feature layer.
-
-The exact entity ID is intentionally not guessed here because the feature file was not included in this release package.
+```text
+sensor.whole_home_envoy_home_consumption
+```
+This is a custom, calculated value that makes a 'best guess' about how much power is not going to either the battery or the grid and assumes that is consumption
 
 ## Known Limitations / Warts
 
