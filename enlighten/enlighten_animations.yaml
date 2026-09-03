@@ -1,0 +1,222 @@
+# ====================================================================
+# CHARGER ANIMATIONS
+# ====================================================================
+
+# --------------------------------------------------------------------
+# GRID TO HOUSE
+# --------------------------------------------------------------------
+
+- id: grid_to_house_animation
+  duration: 3600ms
+  auto_start: true
+  loop: true
+
+  widgets:
+    - id: grid_house_pulse
+      x:
+        from: !lambda |-
+            return ${enlighten_x} + 10 + ${enlighten_width} / 10;
+        to: !lambda |-
+            return ${enlighten_x} - 20 + (${enlighten_width} * 4) / 5;
+
+
+# --------------------------------------------------------------------
+# BATTERY TO HOUSE
+# --------------------------------------------------------------------
+
+- id: battery_house_animation2
+  duration: 1600ms
+  auto_start: false
+  loop: false
+
+  widgets:
+    - id: battery_house_pulse
+      x:
+        from: !lambda |-
+           return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return ${enlighten_x} - 20 + (${enlighten_width} * 4) / 5;
+      y:
+        from: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+        to: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+
+  on_stop:
+    - lvgl.animation.start: battery_house_animation1
+
+
+- id: battery_house_animation1
+  duration: 400ms
+  auto_start: true
+  loop: false
+
+  widgets:
+    - id: battery_house_pulse
+      y:
+        from: !lambda |-
+          return ${enlighten_y} - 20 + (${enlighten_height} * 3) / 5;
+        to: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+      x:
+        from: !lambda |-
+          return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+  on_stop:
+    - lvgl.animation.start: battery_house_animation2
+
+# --------------------------------------------------------------------
+# BATTERY TO GRID
+# --------------------------------------------------------------------
+
+- id: battery_grid_animation2
+  duration: 1600ms
+  auto_start: false
+  loop: false
+
+  widgets:
+    - id: battery_grid_pulse
+      x:
+        from: !lambda |-
+           return  ${enlighten_x} - 80 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return ${enlighten_x} + 10 + ${enlighten_width} / 10;
+      y:
+        from: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+        to: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+
+  on_stop:
+    - lvgl.animation.start: battery_grid_animation1
+
+
+- id: battery_grid_animation1
+  duration: 400ms
+  auto_start: true
+  loop: false
+
+  widgets:
+    - id: battery_grid_pulse
+      y:
+        from: !lambda |-
+          return ${enlighten_y} - 20 + (${enlighten_height} * 3) / 5;
+        to: !lambda |-
+          return ${enlighten_y} + 20 + ${enlighten_height} / 3;
+      x:
+        from: !lambda |-
+          return  ${enlighten_x} - 80 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return  ${enlighten_x} - 80 + (${enlighten_width} / 2);
+  on_stop:
+    - lvgl.animation.start: battery_grid_animation2
+
+# --------------------------------------------------------------------
+# SOLAR TO HOUSE
+# --------------------------------------------------------------------
+
+- id: solar_house_animation1
+  duration: 400ms
+  auto_start: true
+  loop: false
+
+  widgets:
+    - id: solar_house_pulse
+      x:
+        from: !lambda |-
+          return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+      y:
+        from: !lambda |-
+          return ${enlighten_y} + ${enlighten_height} / 5 - 10;
+        to: !lambda |-
+          return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+
+  on_stop:
+    - lvgl.animation.start: solar_house_animation2
+
+
+- id: solar_house_animation2
+  duration: 1600ms
+  auto_start: false
+  loop: false
+
+  widgets:
+    - id: solar_house_pulse
+      x:
+        from: !lambda |-
+          return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+        to: !lambda |-
+          return ${enlighten_x} - 20 + (${enlighten_width} * 4 ) / 5;
+      y:
+        from: !lambda |-
+          return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+        to: !lambda |-
+          return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+  on_stop:
+    - lvgl.animation.start: solar_house_animation1
+
+  # --------------------------------------------------------------------
+  # SOLAR TO GRID
+  # --------------------------------------------------------------------
+
+- id: solar_grid_animation1
+  duration: 400ms
+  auto_start: true
+  loop: false
+
+  widgets:
+    - id: solar_grid_pulse
+      x:
+        from: !lambda |-
+         return ${enlighten_x} - 80 + (${enlighten_width} / 2);
+        to: !lambda |-
+         return ${enlighten_x} - 80 + (${enlighten_width} / 2);
+
+      y:
+        from: !lambda |-
+         return ${enlighten_y} + ${enlighten_height} / 5 - 10;
+        to: !lambda |-
+         return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+  on_stop:
+    - lvgl.animation.start: solar_grid_animation2
+
+
+- id: solar_grid_animation2
+  duration: 1600ms
+  auto_start: false
+  loop: false
+
+  widgets:
+    - id: solar_grid_pulse
+      x:
+        from: !lambda |-
+         return ${enlighten_x} - 80 + (${enlighten_width} / 2);
+        to: !lambda |-
+         return ${enlighten_x} + 10 +${enlighten_width} / 10;
+      y:
+        from: !lambda |-
+         return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+        to: !lambda |-
+          return ${enlighten_y} - 20 + ${enlighten_height} / 3;
+  on_stop:
+    - lvgl.animation.start: solar_grid_animation1
+
+  # --------------------------------------------------------------------
+  # SOLAR TO BATTERY
+  # --------------------------------------------------------------------
+
+- id: solar_battery_animation
+  duration: 1400ms
+  auto_start: true
+  loop: true
+
+  widgets:
+    - id: solar_battery_pulse
+      y:
+        from: !lambda |-
+          return ${enlighten_y} - 10 + ${enlighten_height} / 5;
+        to:  !lambda |-
+          return ${enlighten_y} - 20 + ( ( ${enlighten_height} * 3) / 5);

@@ -1,0 +1,333 @@
+ # ====================================================================
+# GRID -> HOUSE ENERGY FLOW
+# ====================================================================
+obj:
+    x: ${enlighten_x}
+    y: ${enlighten_y}
+    width: ${enlighten_width}
+    height: ${enlighten_height}
+
+    pad_all: 0
+    bg_opa: 0%
+    border_width: 0
+    scrollbar_mode: "OFF"
+    scrollable: false
+    clickable: false
+    widgets:
+
+    - obj:
+        id: grid_house_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        # Static energy path
+        - line:
+            id: grid_house_line
+            points:
+                - x: !lambda |-
+                    return ${enlighten_x} + 20 + ${enlighten_width} / 10;
+
+                  y: !lambda |-
+                    return ${enlighten_y} + 10 + ${enlighten_height} / 3;
+
+                - x: !lambda |-
+                    return ${enlighten_x} - 10 + (${enlighten_width} * 4) / 5;
+
+                  y: !lambda |-
+                    return ${enlighten_y} + 10 + ${enlighten_height} / 3;
+            
+            line_width: 4            
+            line_color: 0x555555
+            line_rounded: true
+
+        # Moving energy pulse
+        - obj:
+            id: grid_house_pulse
+            x:  !lambda |-
+                return ${enlighten_x} + 10 + ${enlighten_width} / 10;
+            y:  !lambda |-
+                return ${enlighten_y} + ${enlighten_height} / 3;
+            width: 20
+            height: 20
+            bg_color: 0x00AEEF
+            radius: 10
+            border_width: 0
+
+    # ====================================================================
+    # BATTERY -> HOUSE ENERGY FLOW
+    # ====================================================================
+    - obj:
+        id: battery_house_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        - line:
+            id: battery_house_line
+            points:
+                - x: !lambda |-
+                    return ${enlighten_x} - 30 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                    return ${enlighten_y} - 10 + (${enlighten_height} * 3) / 5;
+
+                - x: !lambda |-
+                    return ${enlighten_x} - 30 + (${enlighten_width} / 2); 
+                  y: !lambda |-
+                    return ${enlighten_y} + 30 + ${enlighten_height} / 3;
+
+
+                - x: !lambda |-
+                    return ${enlighten_x} - 10 + (${enlighten_width} * 4) / 5;
+                  y: !lambda |-
+                     return ${enlighten_y} + 30 + ${enlighten_height} / 3;
+
+
+            line_width: 4
+            line_color: 0x555555
+            line_rounded: true
+
+        - obj:
+            id: battery_house_pulse
+            x:  !lambda |-
+                 return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+            y:  !lambda |-
+                 return ${enlighten_y} - 20 + (${enlighten_height} * 3) / 5;
+            width: 20
+            height: 20
+            bg_color: 0x00AEEF
+            radius: 10
+            border_width: 0
+    # ====================================================================
+    # SOLAR -> HOUSE ENERGY FLOW
+    # ====================================================================
+    - obj:
+        id: solar_house_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        - line:
+            id: solar_house_line
+            points:
+                - x:  !lambda |-
+                    return ${enlighten_x} - 30 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                        return ${enlighten_y} + ${enlighten_height} / 5;
+        
+                - x: !lambda |-
+                    return ${enlighten_x} - 30 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                        return ${enlighten_y} - 10 + ${enlighten_height} / 3;  
+
+                - x: !lambda |-
+                    return ${enlighten_x} - 10 + (${enlighten_width} * 4) / 5;
+                  y: !lambda |-
+                    return ${enlighten_y} - 10 + ${enlighten_height} / 3;  
+                    
+
+            line_width: 4
+            line_color: 0x555555
+            line_rounded: true
+
+        - obj:
+            id: solar_house_pulse
+            x: !lambda |-
+                        return ${enlighten_x} - 40 + (${enlighten_width} / 2);
+            y: !lambda |-
+                    return ${enlighten_y} - 10 + ${enlighten_height} / 5;
+            
+            width: 20
+            height: 20
+            bg_color: 0x00AEEF
+            radius: 10  
+            border_width: 0
+    # ====================================================================
+    # SOLAR -> GRID ENERGY FLOW
+    # ====================================================================
+    - obj:
+        id: solar_grid_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        - line:
+            id: solar_grid_line
+            points:
+                - x:  !lambda |-
+                    return  ${enlighten_x} - 70 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                    return ${enlighten_y} + ${enlighten_height} / 5;
+
+                - x: !lambda |-
+                    return  ${enlighten_x} - 70 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                        return ${enlighten_y} - 10 + ${enlighten_height} / 3;  
+
+                - x: !lambda |-
+                    return ${enlighten_x} + 20 + ${enlighten_width} / 10;
+                  y: !lambda |-
+                    return ${enlighten_y} - 10 + ${enlighten_height} / 3;  
+            line_width: 4
+            line_color: 0x555555
+            line_rounded: true
+
+        - obj:
+            id: solar_grid_pulse
+            x:  !lambda |-
+                    return  ${enlighten_x} - 80 + (${enlighten_width} / 2);
+            y: !lambda |-
+                    return ${enlighten_y} - 10 + ${enlighten_height} / 5;
+            width: 20
+            height: 20 
+            bg_color: 0x00AEEF
+            radius: 10
+            border_width: 0
+   
+    # ====================================================================
+    # BATTERY -> Grid ENERGY FLOW
+    # Note: This is hidden by default, as this is not used in this implementation.  
+    # It is included for completeness, as it is a valid energy flow.
+    # ====================================================================
+    - obj:
+        id: battery_grid_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+        hidden: true
+        
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        - line:
+            id: battery_grid_line
+            points:
+                - x: !lambda |-
+                    return  ${enlighten_x} - 70 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                    return ${enlighten_y} - 10 + (${enlighten_height} * 3) / 5;
+
+                - x: !lambda |-
+                    return  ${enlighten_x} - 70 + (${enlighten_width} / 2);
+                  y: !lambda |-
+                    return ${enlighten_y} + 30 + ${enlighten_height} / 3;
+
+
+                - x: !lambda |-
+                    return ${enlighten_x} + 20 + ${enlighten_width} / 10;
+                  y: !lambda |-
+                     return ${enlighten_y} + 30 + ${enlighten_height} / 3;
+
+
+            line_width: 4
+            line_color: 0x555555
+            line_rounded: true
+
+        - obj:
+            id: battery_grid_pulse
+            x:  !lambda |-
+                 return  ${enlighten_x} - 80 + (${enlighten_width} / 2);
+            y:  !lambda |-
+                 return ${enlighten_y} - 20 + (${enlighten_height} * 3) / 5;
+            width: 20
+            height: 20
+            bg_color: 0x00AEEF
+            radius: 10
+            border_width: 0
+   
+    # ====================================================================
+    # SOLAR -> BATTERY ENERGY FLOW
+    # ====================================================================
+    - obj:
+        id: solar_battery_flow
+        x: 0
+        y: 0
+        width: 1024
+        height: 600
+        bg_opa: 0%
+        border_opa: 0%
+        shadow_opa: 0%
+        outline_opa: 0%
+
+        radius: 0
+        border_width: 0
+        scrollbar_mode: "OFF"
+
+        widgets:
+        - line:
+            id: solar_battery_line
+            points:
+                - x: !lambda |-
+                    return  ${enlighten_x} - 50 + ( ${enlighten_width} / 2);
+                  y: !lambda |-
+                    return ${enlighten_y} + ${enlighten_height} / 5;
+
+                - x:  !lambda |-
+                    return ( ${enlighten_x} - 50 + ( ${enlighten_width} / 2));
+                  y: !lambda |-
+                    return ${enlighten_y}  - 10 + ( ( ${enlighten_height} *3) / 5);
+
+            
+            line_width: 4
+            line_color: 0x555555
+            line_rounded: true
+
+        - obj:
+            id: solar_battery_pulse
+            x: !lambda |-
+                return ${enlighten_x} - 60 + ( ${enlighten_width} / 2);
+                    
+            y: !lambda |-
+                return ${enlighten_y} - 10 + ${enlighten_height} / 5;
+            width: 20
+            height: 20
+            bg_color: 0x00AEEF
+            radius: 10
+            border_width: 0       

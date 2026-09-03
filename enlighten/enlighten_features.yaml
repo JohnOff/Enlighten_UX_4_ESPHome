@@ -1,0 +1,267 @@
+
+sensor:
+  # --------------------------------------------------------------------------
+  # solar_production_display
+  # --------------------------------------------------------------------------
+
+  - platform: homeassistant
+    id: solar_production_value 
+    entity_id: sensor.combined_solar_production
+
+    on_value:
+      - lvgl.label.update:
+          id: solar_production_value_lable
+          text: !lambda |-
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%.1f kW", x);
+            return std::string(buf);
+
+      - if:
+          condition:
+            sensor.in_range:
+              id: solar_production_value
+              below: 0.01
+          then:
+            - lvgl.label.update:
+                id: solar_status_label
+                text: "Idle"
+          else:
+            - lvgl.label.update:
+                id: solar_status_label
+                text: "Producing"
+            
+  # --------------------------------------------------------------------------
+  # Grid display
+  # --------------------------------------------------------------------------
+
+  - platform: homeassistant
+    id: grid_power_value 
+    entity_id: sensor.whole_home_envoy_current_net_power_consumption
+
+    on_value:
+      - lvgl.label.update:
+          id: grid_power_value_lable
+          text: !lambda |-
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%.1f kW",  (x < 0 ? -x : x));
+            return std::string(buf);
+      - lvgl.label.update:
+          id: grid_icon
+          # change color    
+          text_color: !lambda |-
+            return green_to_black_to_red(x);
+
+      - if:
+          condition:
+            sensor.in_range:
+              id: grid_power_value
+              below: 0.01
+          then:
+            - lvgl.label.update:
+                id: grid_status_label
+                text: "Export"
+            - lvgl.widget.show: solar_grid_flow
+            - lvgl.widget.hide: grid_house_flow
+            - lvgl.widget.show: solar_house_flow
+          else:
+            - lvgl.label.update:
+                id: grid_status_label
+                text: "Import"
+            - lvgl.widget.hide: solar_grid_flow
+            - lvgl.widget.show: grid_house_flow
+            - lvgl.widget.hide: solar_house_flow
+  # --------------------------------------------------------------------------
+  # Home Battery charge
+  # --------------------------------------------------------------------------
+
+  - platform: homeassistant
+    id: battery_charge_value 
+    entity_id: sensor.whole_home_envoy_battery
+
+    on_value:
+      - lvgl.label.update:
+          id: battery_charge_lable
+          text: !lambda |-
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%.1f%%", x);
+            return std::string(buf);
+      # change color    
+          text_color: !lambda |-
+            return percentage_usage_color(x);
+      # change icon based on battery charge level    
+      - lvgl.label.update: 
+          id: battery_charge_icon    
+          text: !lambda |-
+            static char buf[10];
+            std::string icon;
+            if (x == 100.0) {
+                icon = "\U000F0079"; // mdi-battery (full)
+            } else if (x > 90) {
+                icon = "\U000F0082"; // mdi-battery-90
+            } else if (x > 80) {
+                icon = "\U000F0081"; // mdi-battery-80
+            } else if (x > 70) {
+                icon = "\U000F0080"; // mdi-battery-70
+            } else if (x > 60) {
+                icon = "\U000F007F"; // mdi-battery-60
+            } else if (x > 50) {
+                icon = "\U000F007E"; // mdi-battery-50
+            } else if (x > 40) {
+                icon = "\U000F007D"; // mdi-battery-40
+            } else if (x > 30) {
+                icon = "\U000F007C"; // mdi-battery-30
+            } else if (x > 20) {
+                icon = "\U000F007B"; // mdi-battery-20
+            } else if (x > 10) {
+                icon = "\U000F007A"; // mdi-battery-10
+            } else if (x > 0) {
+                icon = "\U000F008E"; // mdi-battery-outline
+            } else {
+                icon = "\U000F0091"; // mdi-battery-unknown (questionmark)
+            }
+            snprintf(buf, sizeof(buf), "%s", icon.c_str());
+            return buf;
+      # change color    
+          text_color: !lambda |-
+            return percentage_usage_color(x);
+  # --------------------------------------------------------------------------
+  # Home Battery power
+  # --------------------------------------------------------------------------
+
+  - platform: homeassistant
+    id: battery_power_value 
+    entity_id: sensor.whole_home_envoy_current_battery_discharge
+
+    on_value:
+      - lvgl.label.update:
+          id: battery_power_lable
+          text: !lambda |-
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%.1f kW", (x < 0 ? -x : x));
+            return std::string(buf);
+
+    # ---------------------------------------------------------------
+    # Battery state
+    #
+    # -0.1 < x < 0.1  = Idle
+    # x <= -0.1       = Discharging
+    # x >= 0.1        = Charging
+    # ---------------------------------------------------------------
+
+      - if:
+          condition:
+            lambda: |-
+              return x > -0.05 && x < 0.05 ;
+          then:
+            - lvgl.label.update:
+                id: battery_status_label
+                text: "Idle"
+
+            - lvgl.widget.hide: solar_battery_flow
+            - lvgl.widget.hide: battery_house_flow
+
+          else:
+            - if:
+                condition:
+                  lambda: |-
+                    return x >= 0.05 ;
+                then:
+                  - lvgl.label.update:
+                      id: battery_status_label
+                      text: "Discharging"
+
+                  - lvgl.widget.hide: solar_battery_flow
+                  - lvgl.widget.show: battery_house_flow
+
+                else:
+                  - lvgl.label.update:
+                      id: battery_status_label
+                      text: "Charging"
+
+                  - lvgl.widget.show: solar_battery_flow
+                  - lvgl.widget.hide: battery_house_flow
+
+  # --------------------------------------------------------------------------
+  # Home Consumption power
+  # --------------------------------------------------------------------------
+
+  - platform: homeassistant
+    id: home_consumption_value 
+    entity_id: sensor.whole_home_envoy_home_consumption
+
+    on_value:
+      - lvgl.label.update:
+          id: house_power_value
+          text: !lambda |-
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%.1f kW", x);
+            return std::string(buf);
+
+
+              
+# ============================================================================
+# HOME ASSISTANT BINARY SENSORS
+# ============================================================================
+
+binary_sensor:
+
+  # --------------------------------------------------------------------------
+  # Grid connected
+  # --------------------------------------------------------------------------
+  - platform: homeassistant
+    id: grid_connected
+    entity_id: binary_sensor.whole_home_envoy_grid_connected
+    trigger_on_initial_state: true
+
+    on_state:
+      then:
+        - logger.log:
+            format: "Grid connected state: %s"
+            args:
+              - 'x ? "CONNECTED" : "DISCONNECTED"'
+
+        - if:
+            condition:
+              lambda: return x;
+            then:
+              - lvgl.widget.hide: grid_disconnected_icon
+            else:
+              - lvgl.widget.show: grid_disconnected_icon
+# ============================================================================
+# FANCY ICONS AS FONTS ELEMENTS
+# ============================================================================
+
+font:
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: battery_icons_75
+    size: 75
+    bpp: 4
+    glyphs: [
+      "\U000F007A", # mdi-battery-10
+      "\U000F007B", # mdi-battery-20
+      "\U000F007C", # mdi-battery-30
+      "\U000F007D", # mdi-battery-40
+      "\U000F007E", # mdi-battery-50
+      "\U000F007F", # mdi-battery-60
+      "\U000F0080", # mdi-battery-70
+      "\U000F0081", # mdi-battery-80
+      "\U000F0082", # mdi-battery-90
+      "\U000F0079", # mdi-battery (full)
+      "\U000F008E", # mdi-battery-outline
+      "\U000F0091", # mdi-battery-unknown
+      ]
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: other_icons_100
+    size: 100
+    bpp: 4
+    glyphs: [
+      "\U000F1A73", # solar-power-variant
+      "\U000F0A72", # solar-power
+      "\U000F1251", # home-lightbulb
+      "\U000F0D3E", # transmission-tower
+      "\U000F192C", # transmission-tower-export
+      "\U000F192D", # transmission-tower-import
+      "\U000F07D2", # home-circle
+      "\U000F104D", # home-circle-outline
+      "\U000F015A"  # close-circle-outline
+      ]
