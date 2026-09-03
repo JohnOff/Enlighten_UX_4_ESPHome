@@ -1,5 +1,5 @@
 # Enlighten_UX_4_ESPHome
-Early working prototype of an Enphase-stle Enlighten UX for ESPHome.
+Early working prototype of an Enphase-style Enlighten UX for ESPHome.
 
 # Enlighten UX
 
@@ -18,7 +18,7 @@ Energy flows are represented by static paths with animated pulses showing the di
 
 This project is being open sourced in its current working state.
 
-The visual layout and energy-flow animation system are intended to be reusable. The application/data layer is currently tied to the author's Home Assistant energy-monitoring setup and is not included in this initial standalone package.
+The visual layout and energy-flow animation system are intended to be reusable. The application/data layer is currently tied to the author's Home Assistant energy-monitoring setup while included in this initial standalone package, will likely need work to use in yours.
 
 In other words: the UX is generalized, the data plumbing isn't (yet).
 
