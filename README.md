@@ -1,3 +1,4 @@
+
 # Enlighten_UX_4_ESPHome
 Early working prototype of an Enphase-style Enlighten UX for ESPHome.
 
@@ -11,7 +12,7 @@ Enlighten UX provides a graphical representation of energy moving between:
 - Solar
 - Battery
 - House
-
+<img width="1628" height="888" alt="ux" src="https://github.com/user-attachments/assets/c073928d-52e4-446d-8f8a-036a844bd9d9" />
 Energy flows are represented by static paths with animated pulses showing the direction of energy movement.
 
 ## Current status
