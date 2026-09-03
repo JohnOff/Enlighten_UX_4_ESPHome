@@ -12,7 +12,8 @@ Enlighten UX provides a graphical representation of energy moving between:
 - Solar
 - Battery
 - House
-<img width="1628" height="888" alt="ux" src="https://github.com/user-attachments/assets/c073928d-52e4-446d-8f8a-036a844bd9d9" />
+<img width="1591" height="539" alt="ux" src="https://github.com/user-attachments/assets/04cd7eeb-e5d1-4151-9db8-2eafb99290ef" />
+
 Energy flows are represented by static paths with animated pulses showing the direction of energy movement.
 
 ## Current status
