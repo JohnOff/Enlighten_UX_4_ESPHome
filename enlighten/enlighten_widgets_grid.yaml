@@ -49,7 +49,7 @@ obj:
     # ================================================================
     # SOLAR
     #
-    # Occupies columns 3-4.
+    # Occupies columns 3-4, rows 1-2.
     #
     #   [ icon ] [ power ]
     #             [ status ]
